@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visuals</title>
+    <!-- style settings for the control panel -->
+    <style>
+        /* set the default styles for the page */
+        body {
+            margin: 0;
+            background-color: #000;
+            color: #FFF;
+            font-family: sans-serif;
+        }
+
+        /* style the canvas */
+        canvas {
+            display: block;
+            overflow: hidden;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+        }
+        p>a, p>a:visited {
+            color: #67ff73;
+        }
+        /* control panel */
+        #controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: 40px auto auto 40px;
+            padding: 20px;
+            width: 460px;
+            border-radius: 5px;
+            border: 1px solid #555555;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #FFF;
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+
+        /* input styles */
+        label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        /* number controls */
+        input[type=number] {
+            width: 60px;
+            margin-left: auto;
+            padding: 2px;
+            text-align: right;
+        }
+
+        /* slider controls */
+        input[type=range] {
+            margin-right: 12px;
+            margin-left: auto;
+            width: 300px;
+        }
+
+        .toggle-link, toggle-link:visited {
+            text-decoration: none;
+            color: #FFF;
+            border: 1px solid #FFF;
+            /* or another color that matches your design */
+            padding: 5px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            transform: rotate(180deg);
+            float: right;
+            clear: both;
+            margin-top: -42px;
+        }
+
+        .toggle-link.flipped {
+            transform: rotate(0deg);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="controls">
+        <h1>Waves</h1>
+        <h2>An Exoteric Visual</h2>
+        <a href="#" id="toggleSettings" class="toggle-link" title="Show / Hide Settings" >^</a>
+        <div id="settings">
+            <p>Press <strong id="instruction">Ctrl+S</strong> to save a copy of this project!</p>
+            <hr>
+            <h2>Settings</h2>
+            <h3>Lines</h3>
+            <label title="The number of lines being rendered.">Number:
+                <div class="input-group">
+                    <input type="range" id="lineCountSlider" min="1" max="120" value="12">
+                    <input type="number" id="lineCountNumber" min="1" max="120" value="12">
+                </div>
+            </label><br>
+            <label title="Line width.">Size:
+                <div class="input-group">
+                    <input type="range" id="lineSizeSlider" min="1" max="300" value="130">
+                    <input type="number" id="lineSizeNumber" min="1" max="300" value="130">
+                </div>
+            </label><br>
+            <label title="Distance between the lines.">Spacing:
+                <div class="input-group">
+                    <input type="range" id="lineSpacingSlider" min="0" max="600" value="76">
+                    <input type="number" id="lineSpacingNumber" min="0" max="600" value="76">
+                </div>
+            </label><br>
+            <label title="The distance from top of screen.">Start Offset:
+                <div class="input-group">
+                    <input type="range" id="startOffsetSlider" min="-150" max="1080" value="-76">
+                    <input type="number" id="startOffsetNumber" min="-150" max="1080" value="-76">
+                </div>
+            </label><br>
+            <h3>Wave</h3>
+            <label title="Wave height.">Amplitude:
+                <div class="input-group">
+                    <input type="range" id="amplitudeBaseSlider" min="0" max="1000" value="110">
+                    <input type="number" id="amplitudeBaseNumber" min="0" max="1000" value="110">
+                </div>
+            </label><br>
+            <label title="How many waves to wave.">Frequency:
+                <div class="input-group">
+                    <input type="range" id="frequencySlider" min="0.001" max="0.01" step="0.0001" value="0.003">
+                    <input type="number" id="frequencyNumber" min="0.001" max="0.01" step="0.0001" value="0.003">
+                </div>
+            </label><br>
+            <label title="Offset left/right stabilization in the wave.">Bias:
+                <div class="input-group">
+                    <input type="range" id="phaseOffsetSlider" min="-1.100" max="1.100" step="0.001" value="-0.42">
+                    <input type="number" id="phaseOffsetNumber" min="-1.100" max="1.100" step="0.001" value="-0.42">
+                </div>
+            </label><br>
+            <label title="The amount the Noise functions affect the main wave.">Noise Effect:
+                <div class="input-group">
+                    <input type="range" id="noiseEffectSlider" min="0.00" max="25.00" step="0.01" value="0.76">
+                    <input type="number" id="noiseEffectNumber" min="0.00" max="25.00" step="0.1" value="0.76">
+                </div>
+            </label><br>
+            <h3>Noise</h3>
+            <label>Amplitude:
+                <div class="input-group">
+                    <input type="range" id="noiseAmplitudeSlider" min="0" max="200" value="60">
+                    <input type="number" id="noiseAmplitudeNumber" min="0" max="200" value="60">
+                </div>
+            </label><br>
+            <label>Frequency:
+                <div class="input-group">
+                    <input type="range" id="noiseFrequencySlider" min="0.001" max="0.100" step="0.0001" value="0.002">
+                    <input type="number" id="noiseFrequencyNumber" min="0.001" max="0.100" step="0.0001" value="0.002">
+                </div>
+            </label><br>
+            <label>Bias:
+                <div class="input-group">
+                    <input type="range" id="noiseTravelSlider" min="-0.10" max="0.10" step="0.001" value="0.000">
+                    <input type="number" id="noiseTravelNumber" min="-0.10" max="0.10" step="0.001" value="0.000">
+                </div>
+            </label><br>
+        </div>
+        <hr>
+        <p>Project &amp; Content &copy; 2023 <a href="https://www.theexoteric.com">The Exoteric</a>. All rights reserved.</p>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+</body>
+<!-- Load script after body is loaded -->
+<script>
+    // sliders for the lines displayed
+    var lineCountSlider = document.getElementById('lineCountSlider');
+    var lineCountNumber = document.getElementById('lineCountNumber');
+    // Function to update the number field when the slider changes
+    lineCountSlider.addEventListener('input', function () {
+        lineCountNumber.value = lineCountSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    lineCountNumber.addEventListener('input', function () {
+        lineCountSlider.value = lineCountNumber.value;
+    });
+
+    // sliders for the line width
+    var lineSizeSlider = document.getElementById('lineSizeSlider');
+    var lineSizeNumber = document.getElementById('lineSizeNumber');
+    // Function to update the number field when the slider changes
+    lineSizeSlider.addEventListener('input', function () {
+        lineSizeNumber.value = lineSizeSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    lineSizeNumber.addEventListener('input', function () {
+        lineSizeSlider.value = lineSizeNumber.value;
+    });
+
+    // sliders for the line spacing
+    var lineSpacingSlider = document.getElementById('lineSpacingSlider');
+    var lineSpacingNumber = document.getElementById('lineSpacingNumber');
+    // Function to update the number field when the slider changes
+    lineSpacingSlider.addEventListener('input', function () {
+        lineSpacingNumber.value = lineSpacingSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    lineSpacingNumber.addEventListener('input', function () {
+        lineSpacingSlider.value = lineSpacingNumber.value;
+    });
+
+    // sliders for the start offset
+    var startOffsetSlider = document.getElementById('startOffsetSlider');
+    var startOffsetNumber = document.getElementById('startOffsetNumber');
+    // Function to update the number field when the slider changes
+    startOffsetSlider.addEventListener('input', function () {
+        startOffsetNumber.value = startOffsetSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    startOffsetNumber.addEventListener('input', function () {
+        startOffsetSlider.value = startOffsetNumber.value;
+    });
+
+    // sliders for the wave height
+    var amplitudeBaseSlider = document.getElementById('amplitudeBaseSlider');
+    var amplitudeBaseNumber = document.getElementById('amplitudeBaseNumber');
+    // Function to update the number field when the slider changes
+    amplitudeBaseSlider.addEventListener('input', function () {
+        amplitudeBaseNumber.value = amplitudeBaseSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    amplitudeBaseNumber.addEventListener('input', function () {
+        amplitudeBaseSlider.value = amplitudeBaseNumber.value;
+    });
+
+    // sliders for frequency
+    var frequencySlider = document.getElementById('frequencySlider');
+    var frequencyNumber = document.getElementById('frequencyNumber');
+    // Function to update the number field when the slider changes
+    frequencySlider.addEventListener('input', function () {
+        frequencyNumber.value = frequencySlider.value;
+    });
+    // Function to update the slider when the number field changes
+    frequencyNumber.addEventListener('input', function () {
+        frequencySlider.value = frequencyNumber.value;
+    });
+
+    // sliders for bias
+    var phaseOffsetSlider = document.getElementById('phaseOffsetSlider');
+    var phaseOffsetNumber = document.getElementById('phaseOffsetNumber');
+    // Function to update the number field when the slider changes
+    phaseOffsetSlider.addEventListener('input', function () {
+        phaseOffsetNumber.value = phaseOffsetSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    phaseOffsetNumber.addEventListener('input', function () {
+        phaseOffsetSlider.value = frequencyNumber.value;
+    });
+
+    // sliders for noise effect
+    var noiseEffectSlider = document.getElementById('noiseEffectSlider');
+    var noiseEffectNumber = document.getElementById('noiseEffectNumber');
+    // Function to update the number field when the slider changes
+    noiseEffectSlider.addEventListener('input', function () {
+        noiseEffectNumber.value = noiseEffectSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    noiseEffectNumber.addEventListener('input', function () {
+        noiseEffectSlider.value = noiseEffectNumber.value;
+    });
+    
+    // sliders for noise amplitude
+    var noiseAmplitudeSlider = document.getElementById('noiseAmplitudeSlider');
+    var noiseAmplitudeNumber = document.getElementById('noiseAmplitudeNumber');
+    // Function to update the number field when the slider changes
+    noiseAmplitudeSlider.addEventListener('input', function () {
+        noiseAmplitudeNumber.value = noiseAmplitudeSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    noiseAmplitudeNumber.addEventListener('input', function () {
+        noiseAmplitudeSlider.value = noiseAmplitudeNumber.value;
+    });
+    
+    // sliders for noise frequency
+    var noiseFrequencySlider = document.getElementById('noiseFrequencySlider');
+    var noiseFrequencyNumber = document.getElementById('noiseFrequencyNumber');
+    // Function to update the number field when the slider changes
+    noiseFrequencySlider.addEventListener('input', function () {
+        noiseFrequencyNumber.value = noiseFrequencySlider.value;
+    });
+    // Function to update the slider when the number field changes
+    noiseFrequencyNumber.addEventListener('input', function () {
+        noiseFrequencySlider.value = noiseFrequencyNumber.value;
+    });
+    
+    // sliders for noise bias
+    var noiseTravelSlider = document.getElementById('noiseTravelSlider');
+    var noiseTravelNumber = document.getElementById('noiseTravelNumber');
+    // Function to update the number field when the slider changes
+    noiseTravelSlider.addEventListener('input', function () {
+        noiseTravelNumber.value = noiseTravelSlider.value;
+    });
+    // Function to update the slider when the number field changes
+    noiseTravelNumber.addEventListener('input', function () {
+        noiseTravelSlider.value = noiseTravelNumber.value;
+    });
+    
+    // canvas setup
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    // save a copy of the project instructions
+    var saveInstruction = document.getElementById('instruction');
+
+    // update instruction for mac users (they need special help)
+    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0) {
+        saveInstruction.textContent = 'Cmd+S';
+    }
+
+    // update canvas size if user resizes the window
+    function updateCanvasSize() {
+        canvas.width = window.innerWidth / 2;
+        canvas.height = window.innerHeight / 2;
+        gradient(0);
+    }
+
+    // Lines variables
+    var numLines = +lineCountSlider.value;
+    var spacing = +lineSpacingSlider.value;
+
+    // base wave variables
+    var phaseSpeed = +phaseOffsetSlider.value*-1;
+    var frequency = +frequencySlider.value;
+    var baseAmplitude = +amplitudeBaseSlider.value;
+
+    // Variables for controlling noise effect
+    var noiseFrequency = +noiseFrequencySlider.value;
+    var noiseSpeed = +noiseTravelSlider.value*-1;
+    var noiseOffset = 0;
+
+    // Create gradient
+    var gradient = function (color) {
+        let gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        // Color at the start of the line
+        let color1 = 'rgb(180, ' + color + ', ' + (235 - color) + ')';
+        gradient.addColorStop(0, color1); // Blue
+        // Color at the end of the line
+        let color2 = 'rgb(' + (245 - color) + ',' + (255 - color) + ', ' + (color) + ')';
+        gradient.addColorStop(1, color2); // Red
+
+        return gradient;
+    };
+
+    // Draw the lines
+    function draw() {
+        // lines
+        numLines = +lineCountSlider.value;
+        spacing = +lineSpacingSlider.value;
+        // Phase 
+        phaseSpeed = +phaseOffsetSlider.value*-1;
+        frequency = +frequencySlider.value;
+        baseAmplitude = +amplitudeBaseSlider.value;
+        // noise effect
+        noiseFrequency = +noiseFrequencySlider.value;
+        noiseSpeed = +noiseTravelSlider.value*-1;
+
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Iterate through the lines
+        for (var i = 0; i < numLines; i++) {
+
+            // build the line
+            ctx.strokeStyle = gradient(i * 20);
+            ctx.lineCap = 'round';
+            ctx.lineWidth = lineSizeSlider.value;
+            ctx.beginPath();
+
+            // Iterate through the x positions
+            for (var x = 0; x < canvas.width; x++) {
+                // Compute a smooth noise value for the current x position
+                var noiseValue = Math.sin(x * noiseFrequency + noiseOffset + i) * Math.cos(x * noiseFrequency * 1.5 + noiseOffset);
+                // Modulate the amplitude using the noise value
+                var amplitude = baseAmplitude + noiseValue * (noiseEffectSlider.value * noiseAmplitudeSlider.value);
+                // Compute the y position using the sine function and modulated amplitude
+                var y = +startOffsetSlider.value + Math.sin((x + (Date.now() * phaseSpeed)) * frequency) * amplitude + (i * spacing);
+                // next point
+                ctx.lineTo(x, y);
+            }
+
+            // draw the line
+            ctx.stroke();
+        }
+
+        // Increment the noise offset to achieve horizontal movement
+        noiseOffset += noiseSpeed;
+
+        // auto animate
+        requestAnimationFrame(draw);
+    }
+
+    // handle settings toggle
+    document.getElementById('toggleSettings').addEventListener('click', function (e) {
+        e.preventDefault();
+        var link = document.getElementById('toggleSettings');
+        var settings = document.getElementById('settings');
+        // toggle the flipped class
+        link.classList.toggle('flipped');
+        settings.style.display = settings.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Handle resizing
+    window.addEventListener('resize', updateCanvasSize);
+    updateCanvasSize();
+
+    // setup starting state
+    var settings = document.getElementById('settings');
+    settings.style.display = 'none';
+
+    // go!
+    draw();
+
+</script>
+
+</html>
